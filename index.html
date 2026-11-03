@@ -1,0 +1,2638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JORDAN // 023 — CHICAGO BULLS / 6× WORLD CHAMPION / FLIGHT ARCHIVES</title>
+
+  <!-- Google Fonts: Oswald (Display) & Space Grotesk (Technical Editorial) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Import Map: Three.js and Lenis -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/",
+      "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.mjs"
+    }
+  }
+  </script>
+
+  <style>
+    /* ----------------------------------------------------
+       DESIGN TOKENS & TYPOGRAPHY SYSTEM
+       ---------------------------------------------------- */
+    :root {
+      /* Raw Palette matching Kimi reference */
+      --raw-color-ice-50: #f7fafb;
+      --raw-color-ice-100: #ebeef1;
+      --raw-color-ice-200: #dfe5e9;
+      --raw-color-steel-400: #b6c1c8;
+      --raw-color-ink-950: #090a0b;
+      --raw-color-ink-900: #0e0f14;
+      --raw-color-ink-800: #1b1d24;
+      --raw-color-ink-700: #2a2d36;
+      --raw-color-ink-alpha-35: rgba(9, 10, 11, 0.35);
+      --raw-color-slate-500: #7a7a7a;
+      --raw-color-slate-600: #4d4d4d;
+      --raw-color-slate-900: #1e1e1e;
+
+      /* Chicago Bulls Crimson & Championship Gold */
+      --raw-color-accent: #e01a35;
+      --raw-color-accent-bright: #ff223b;
+      --raw-color-accent-glow: rgba(224, 26, 53, 0.22);
+      --raw-color-gold: #d4af37;
+      --raw-color-white: #ffffff;
+      --raw-color-white-alpha-40: rgba(255, 255, 255, 0.40);
+      --raw-color-white-alpha-20: rgba(255, 255, 255, 0.20);
+      --raw-color-white-alpha-10: rgba(255, 255, 255, 0.10);
+
+      /* Typography Scale */
+      --raw-font-size-96: 6.25rem;
+      --raw-font-size-70: 4.375rem;
+      --raw-font-size-55: 3.4375rem;
+      --raw-font-size-38: 2.375rem;
+      --raw-font-size-24: 1.5rem;
+      --raw-font-size-20: 1.25rem;
+      --raw-font-size-18: 1.125rem;
+      --raw-font-size-16: 1rem;
+      --raw-font-size-14: 0.875rem;
+      --raw-font-size-12: 0.75rem;
+      --raw-font-size-11: 0.6875rem;
+      --raw-font-size-10: 0.625rem;
+
+      --raw-leading-95: 0.95;
+      --raw-leading-92: 0.92;
+      --raw-leading-90: 0.90;
+      --raw-leading-72: 0.72;
+      --raw-leading-110: 1.10;
+
+      /* Semantics */
+      --background: var(--raw-color-ice-50);
+      --foreground: var(--raw-color-ink-950);
+      --foreground-muted: var(--raw-color-ink-alpha-35);
+      --surface-dark: var(--raw-color-ink-900);
+      --surface-black: var(--raw-color-ink-950);
+      --border-muted: var(--raw-color-ice-200);
+      --border-on-dark: var(--raw-color-ink-700);
+      --accent: var(--raw-color-accent);
+
+      --font-display: 'Oswald', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--surface-black);
+      color: var(--foreground);
+      font-family: var(--font-mono);
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--surface-black);
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ----------------------------------------------------
+       THE LOADING VEIL
+       ---------------------------------------------------- */
+    #loading-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--surface-black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      transition: transform 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
+    }
+
+    #loading-veil.loaded {
+      transform: translateY(-100%);
+      pointer-events: none;
+      visibility: hidden;
+      transition: transform 0.75s cubic-bezier(0.85, 0, 0.15, 1), visibility 0s 0.75s;
+    }
+
+    .veil-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .veil-logo {
+      width: 100px;
+      height: 100px;
+      position: relative;
+    }
+
+    .veil-logo svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: var(--raw-color-steel-400);
+      stroke-width: 1.5;
+    }
+
+    .veil-fill {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      height: 0%;
+      transition: height 0.1s linear;
+    }
+
+    .veil-fill svg {
+      width: 100px;
+      height: 100px;
+      fill: var(--accent);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+    }
+
+    .veil-eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-11);
+      letter-spacing: 0.2em;
+      color: var(--raw-color-steel-400);
+      text-transform: uppercase;
+    }
+
+    .veil-title {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-24);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--raw-color-white);
+      text-transform: uppercase;
+    }
+
+    .veil-meter-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--raw-color-ink-800);
+    }
+
+    .veil-meter-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent);
+      transition: width 0.1s linear;
+    }
+
+    /* ----------------------------------------------------
+       STICKY STACK ARCHITECTURE
+       ---------------------------------------------------- */
+    .sticky-stack-container {
+      position: relative;
+      background: var(--surface-black);
+      width: 100%;
+    }
+
+    .stack-layer {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .stack-layer[data-layer="1"] { z-index: 10; }
+    .stack-layer[data-layer="2"] { z-index: 20; }
+    .stack-layer[data-layer="3"] { position: relative; z-index: 30; min-height: auto; }
+
+    .stack-inner {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      transform-origin: center center;
+    }
+
+    .stack-shade {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-black);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.1s ease-out;
+    }
+
+    /* ----------------------------------------------------
+       SECTION 1: THE HERO (EXACT GETLAYERS CRAFT)
+       ---------------------------------------------------- */
+    section[data-hero] {
+      position: relative;
+      isolation: isolate;
+      min-height: 100lvh;
+      overflow: hidden;
+      background: var(--background);
+      color: var(--foreground);
+    }
+
+    #hero-contour-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.8;
+    }
+
+    #hero-canvas-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #hero-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      min-height: 100lvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem 2.5rem;
+      pointer-events: none;
+    }
+
+    .hero-content a, .hero-content button, .bracket-panel {
+      pointer-events: auto;
+    }
+
+    /* Masthead */
+    .hero-masthead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--raw-font-size-11);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-muted);
+    }
+
+    .masthead-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .masthead-nav {
+      display: flex;
+      gap: 2.25rem;
+    }
+
+    .masthead-nav a {
+      color: var(--foreground);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .masthead-nav a:hover {
+      color: var(--accent);
+    }
+
+    .masthead-cta {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-11);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--foreground);
+      text-decoration: none;
+      padding: 0.45rem 1rem;
+      border: 1px solid var(--border-muted);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+
+    .masthead-cta:hover {
+      background: var(--surface-black);
+      color: var(--raw-color-white);
+      border-color: var(--surface-black);
+    }
+
+    /* Middle Row: Left Rail & Right Panels */
+    .hero-middle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      flex: 1;
+      padding: 2rem 0;
+    }
+
+    .hero-identity {
+      max-width: 28rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .hero-driver-tag {
+      font-size: var(--raw-font-size-11);
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--foreground-muted);
+      text-transform: uppercase;
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 8.5vw, 6.75rem);
+      font-weight: 700;
+      line-height: var(--raw-leading-92);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--raw-color-ink-950);
+    }
+
+    .hero-meta-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: var(--raw-font-size-12);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .meta-row span.flag {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .meta-row span.label {
+      color: var(--foreground-muted);
+      font-weight: 500;
+    }
+
+    .meta-row span.val {
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    /* Right Rail: Exact Bracket-Cornered Cards */
+    .hero-panels-column {
+      width: 17.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .bracket-panel {
+      position: relative;
+      background: rgba(14, 15, 20, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--raw-color-white);
+      padding: 1.15rem 1.25rem;
+      border-radius: 2px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .bracket-panel:hover {
+      transform: translateY(-3px);
+      border-color: rgba(224, 26, 53, 0.4);
+    }
+
+    /* Minimal Corner Brackets: ┌ ┐ └ ┘ */
+    .panel-corner-tl, .panel-corner-tr, .panel-corner-bl, .panel-corner-br {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-color: rgba(224, 26, 53, 0.7);
+      border-style: solid;
+      pointer-events: none;
+    }
+    .panel-corner-tl { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+    .panel-corner-tr { top: -1px; right: -1px; border-width: 1.5px 1.5px 0 0; }
+    .panel-corner-bl { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
+    .panel-corner-br { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+    .bracket-eyebrow {
+      font-size: var(--raw-font-size-10);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .bracket-main-title {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-20);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+      color: var(--raw-color-white);
+    }
+
+    .bracket-subtitle {
+      font-size: var(--raw-font-size-11);
+      color: var(--raw-color-steel-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.85rem;
+    }
+
+    .circuit-vector-box {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circuit-vector-box svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    /* Tenure Uniform Switcher Buttons */
+    .tenure-btns-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+    }
+
+    .jersey-btn {
+      background: rgba(22, 25, 33, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--raw-color-steel-400);
+      padding: 0.5rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-11);
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+
+    .jersey-btn:hover {
+      border-color: rgba(224, 26, 53, 0.5);
+      color: #fff;
+    }
+
+    .jersey-btn.active {
+      background: rgba(224, 26, 53, 0.16);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(224, 26, 53, 0.2);
+    }
+
+    .jersey-btn .badge {
+      font-size: var(--raw-font-size-10);
+      letter-spacing: 0.1em;
+      color: var(--raw-color-steel-400);
+    }
+
+    .jersey-btn.active .badge {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Stats Grid */
+    .stats-horizontal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+      margin-top: 0.6rem;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-24);
+      font-weight: 700;
+      color: var(--raw-color-white);
+      line-height: 1;
+    }
+
+    .stat-caption {
+      font-size: var(--raw-font-size-10);
+      color: var(--raw-color-steel-400);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* Hero Foot / Actions Row */
+    .hero-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--raw-font-size-11);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.25rem;
+      background: rgba(247, 250, 251, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-muted);
+      border-radius: 6px 6px 0 0;
+      position: relative;
+      z-index: 20;
+    }
+
+    .hero-audio-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: none;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-11);
+      color: var(--foreground);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    .audio-wave {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .audio-bar {
+      width: 2px;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 1px;
+      animation: soundPulse 1.2s ease-in-out infinite alternate;
+    }
+
+    .audio-bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
+    .audio-bar:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+    .audio-bar:nth-child(3) { height: 55%; animation-delay: 0.2s; }
+    .audio-bar:nth-child(4) { height: 80%; animation-delay: 0.4s; }
+
+    @keyframes soundPulse {
+      0% { transform: scaleY(0.25); }
+      100% { transform: scaleY(1.0); }
+    }
+
+    .hero-audio-toggle.muted .audio-bar {
+      animation: none;
+      height: 20%;
+      background: var(--raw-color-slate-500);
+    }
+
+    .hero-live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 600;
+      color: var(--foreground);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--border-muted);
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ----------------------------------------------------
+       SECTION 2: THE DYNASTY & CLUTCH MAP
+       ---------------------------------------------------- */
+    section[data-season] {
+      position: relative;
+      isolation: isolate;
+      min-height: 100lvh;
+      overflow: hidden;
+      background: var(--surface-black);
+      color: var(--raw-color-white);
+    }
+
+    #seam-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 34vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .court-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+    }
+
+    #court-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .court-svg-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .season-content {
+      position: relative;
+      z-index: 20;
+      min-height: 100lvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 4.5rem 2.5rem 3rem;
+      pointer-events: none;
+    }
+
+    .season-content a, .season-content button, .standings-plate, .reticle-hud {
+      pointer-events: auto;
+    }
+
+    .season-header {
+      max-width: 32rem;
+    }
+
+    .season-eyebrow {
+      font-size: var(--raw-font-size-11);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .season-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, var(--raw-font-size-55));
+      font-weight: 700;
+      line-height: var(--raw-leading-95);
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .season-title span.period {
+      color: var(--raw-color-white);
+    }
+
+    .season-divider-bar {
+      width: 3.5rem;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .season-desc {
+      font-size: var(--raw-font-size-14);
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--raw-color-steel-400);
+      max-width: 26rem;
+    }
+
+    /* Standings Plate Bottom Right */
+    .standings-plate-container {
+      align-self: flex-end;
+    }
+
+    .standings-plate {
+      position: relative;
+      width: 310px;
+      background: rgba(14, 15, 20, 0.95);
+      border: 1px solid var(--accent);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+      padding: 1.25rem;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.25rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .plate-globe-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      border-right: 1px solid var(--raw-color-ink-700);
+      padding-right: 1.25rem;
+    }
+
+    .plate-wireframe-ball {
+      width: 40px;
+      height: 40px;
+      position: relative;
+    }
+
+    .plate-wireframe-ball svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+      stroke-width: 1.2;
+      fill: none;
+      animation: rotateGlobe 12s linear infinite;
+    }
+
+    @keyframes rotateGlobe {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .plate-globe-meta {
+      font-size: var(--raw-font-size-10);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--raw-color-white);
+      text-align: center;
+    }
+
+    .plate-globe-meta span.gold { color: var(--raw-color-gold); }
+
+    .plate-stats-cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.55rem;
+    }
+
+    .plate-stat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      font-size: var(--raw-font-size-11);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .plate-stat-row .stat-fig {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-18);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .plate-stat-row .stat-lbl {
+      color: var(--raw-color-white);
+      font-size: var(--raw-font-size-11);
+    }
+
+    /* Reticle HUD */
+    .reticle-hud {
+      position: absolute;
+      bottom: 2rem;
+      left: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: var(--raw-font-size-11);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--raw-color-steel-400);
+      background: rgba(14, 15, 20, 0.8);
+      padding: 0.55rem 1.15rem;
+      border: 1px solid var(--raw-color-ink-700);
+      border-radius: 3px;
+      backdrop-filter: blur(8px);
+    }
+
+    .reticle-hud span.val {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ----------------------------------------------------
+       SECTION 3: THE CAREER TIMELINE
+       ---------------------------------------------------- */
+    section[data-timeline] {
+      position: relative;
+      isolation: isolate;
+      background: var(--surface-black);
+      color: var(--raw-color-white);
+      padding: 8rem 2.5rem 10rem;
+    }
+
+    .timeline-header {
+      text-align: center;
+      max-width: 44rem;
+      margin: 0 auto 6rem;
+    }
+
+    .timeline-eyebrow {
+      font-size: var(--raw-font-size-11);
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .timeline-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, var(--raw-font-size-55));
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--raw-color-white);
+      margin-bottom: 1rem;
+    }
+
+    .timeline-subtitle {
+      font-size: var(--raw-font-size-14);
+      color: var(--raw-color-steel-400);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .timeline-track-wrapper {
+      position: relative;
+      max-width: 64rem;
+      margin: 0 auto;
+    }
+
+    .timeline-center-rail {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: var(--raw-color-white-alpha-20);
+    }
+
+    .timeline-progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .timeline-spinning-marker {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%) rotate(0deg);
+      background: var(--surface-black);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 16px var(--accent);
+      z-index: 10;
+    }
+
+    .timeline-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .timeline-card-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      transition: opacity 0.4s ease;
+    }
+
+    .timeline-cards-list:hover .timeline-card-row { opacity: 0.35; }
+    .timeline-cards-list:hover .timeline-card-row:hover { opacity: 1; }
+    .timeline-card-row.left { justify-content: flex-start; }
+    .timeline-card-row.right { justify-content: flex-end; }
+
+    .timeline-plate {
+      width: calc(50% - 3.5rem);
+      background: rgba(18, 20, 26, 0.88);
+      border: 1px solid var(--raw-color-ink-700);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+      border-radius: 3px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      transition: all 0.35s ease;
+    }
+
+    .timeline-plate:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 28px 60px rgba(224, 26, 53, 0.15);
+    }
+
+    .timeline-card-visual {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .timeline-card-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(35%) contrast(110%);
+      transition: transform 0.6s ease;
+    }
+
+    .timeline-plate:hover .timeline-card-visual img {
+      transform: scale(1.05);
+      filter: grayscale(0%) contrast(115%);
+    }
+
+    .timeline-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14, 15, 20, 0.95) 0%, transparent 65%);
+    }
+
+    .timeline-year-watermark {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 1.25rem;
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-55);
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.12);
+      line-height: 1;
+    }
+
+    .timeline-card-body {
+      padding: 1.35rem 1.6rem;
+    }
+
+    .timeline-card-eyebrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--raw-font-size-11);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+
+    .timeline-card-title {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-20);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--raw-color-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-card-desc {
+      font-size: var(--raw-font-size-12);
+      line-height: 1.5;
+      color: var(--raw-color-steel-400);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ----------------------------------------------------
+       SECTION 4: THE ANATOMY OF FLIGHT
+       ---------------------------------------------------- */
+    section[data-flight] {
+      position: relative;
+      isolation: isolate;
+      min-height: 100vh;
+      overflow: hidden;
+      background: var(--background);
+      color: var(--foreground);
+      padding: 6rem 2.5rem;
+    }
+
+    #contour-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .flight-content {
+      position: relative;
+      z-index: 10;
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .flight-header { max-width: 48rem; }
+
+    .flight-eyebrow {
+      font-size: var(--raw-font-size-11);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+
+    .flight-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.25rem, 7vw, var(--raw-font-size-96));
+      font-weight: 700;
+      line-height: var(--raw-leading-95);
+      text-transform: uppercase;
+      color: var(--raw-color-ink-950);
+      margin-bottom: 1.5rem;
+    }
+
+    .flight-intro {
+      font-size: var(--raw-font-size-16);
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--raw-color-ink-700);
+      max-width: 42rem;
+    }
+
+    .flight-biometrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .biometric-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-muted);
+      border-radius: 3px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
+    }
+
+    .biometric-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(224, 26, 53, 0.08);
+    }
+
+    .biometric-tag {
+      font-size: var(--raw-font-size-10);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .biometric-value {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-38);
+      font-weight: 700;
+      color: var(--raw-color-ink-950);
+      line-height: 1;
+      margin-bottom: 0.45rem;
+    }
+
+    .biometric-label {
+      font-size: var(--raw-font-size-11);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--foreground-muted);
+    }
+
+    .finals-strip-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .finals-strip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--raw-font-size-11);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--foreground-muted);
+    }
+
+    .finals-strip-cards {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+    }
+
+    .final-round-card {
+      background: var(--surface-dark);
+      border: 1px solid var(--border-on-dark);
+      border-radius: 3px;
+      padding: 1.15rem 0.95rem;
+      color: var(--raw-color-white);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .final-round-card:hover {
+      border-color: var(--accent);
+    }
+
+    .final-round-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 18px var(--raw-color-accent-glow);
+    }
+
+    .final-card-year {
+      font-family: var(--font-display);
+      font-size: var(--raw-font-size-20);
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+
+    .final-card-opponent {
+      font-size: var(--raw-font-size-11);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+
+    .final-card-result {
+      font-size: var(--raw-font-size-10);
+      color: var(--raw-color-steel-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .final-pulse-dot {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.3); }
+      100% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    /* Action CTA Button */
+    .flight-actions {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 1rem;
+    }
+
+    .chamfer-btn {
+      position: relative;
+      background: var(--surface-black);
+      color: var(--raw-color-white);
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-12);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1.15rem 2.25rem;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+      border: 1px solid var(--surface-black);
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .chamfer-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .chamfer-btn:hover::before { transform: translateY(0%); }
+    .chamfer-btn span { position: relative; z-index: 2; }
+
+    /* ----------------------------------------------------
+       SECTION 5: BECOME LEGENDARY (FOOTER)
+       ---------------------------------------------------- */
+    section[data-footer] {
+      position: relative;
+      isolation: isolate;
+      background: var(--accent);
+      padding: 1rem;
+      min-height: 80vh;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .footer-inner-panel {
+      position: relative;
+      flex: 1;
+      background: var(--surface-black);
+      border-radius: 2px;
+      overflow: hidden;
+      padding: 5rem 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: var(--raw-color-white);
+    }
+
+    #footer-contour-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .footer-top {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+    }
+
+    .footer-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 700;
+      line-height: var(--raw-leading-95);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      max-width: 50rem;
+    }
+
+    .footer-headline span.accent { color: var(--accent); }
+
+    .footer-nav-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      font-size: var(--raw-font-size-12);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .footer-nav-col a {
+      color: var(--raw-color-steel-400);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-nav-col a:hover {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border-on-dark);
+      font-size: var(--raw-font-size-11);
+      color: var(--raw-color-steel-400);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .footer-legal-copy {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .footer-back-to-top {
+      background: none;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: var(--raw-font-size-11);
+      color: var(--accent);
+      cursor: pointer;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: color 0.2s ease;
+    }
+
+    .footer-back-to-top:hover { color: var(--raw-color-white); }
+
+    @media (max-width: 1024px) {
+      .hero-content { padding: 1.25rem 1.5rem; }
+      .hero-middle { flex-direction: column; align-items: flex-start; gap: 2rem; }
+      .hero-panels-column { width: 100%; flex-direction: row; }
+      .bracket-panel { flex: 1; }
+      .finals-strip-cards { grid-template-columns: repeat(3, 1fr); }
+      .timeline-card-row.left, .timeline-card-row.right { justify-content: center; }
+      .timeline-plate { width: 100%; max-width: 32rem; }
+      .timeline-center-rail { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-panels-column { flex-direction: column; }
+      .finals-strip-cards { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; }
+      .standings-plate { width: 100%; }
+      .hero-masthead { flex-wrap: wrap; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING VEIL -->
+  <div id="loading-veil">
+    <div class="veil-center">
+      <div class="veil-logo">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 15 L58 35 L80 38 L63 52 L68 74 L50 62 L32 74 L37 52 L20 38 L42 35 Z" />
+        </svg>
+        <div class="veil-fill" id="veil-fill">
+          <svg viewBox="0 0 100 100">
+            <path d="M50 15 L58 35 L80 38 L63 52 L68 74 L50 62 L32 74 L37 52 L20 38 L42 35 Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="veil-eyebrow">FLIGHT ARCHIVES // HISTORICAL COMPILATION</div>
+      <div class="veil-title">MICHAEL JORDAN // 023</div>
+    </div>
+    <div class="veil-meter-track">
+      <div class="veil-meter-fill" id="veil-meter"></div>
+    </div>
+  </div>
+
+  <!-- STICKY STACK CONTAINER -->
+  <div class="sticky-stack-container" id="stack-container">
+
+    <!-- LAYER 1: HERO -->
+    <div class="stack-layer" data-layer="1">
+      <div class="stack-inner" id="layer-inner-1">
+        <section data-hero>
+          <!-- Background Rolling Contours -->
+          <canvas id="hero-contour-canvas"></canvas>
+
+          <!-- WebGL Three.js Parallax Canvas -->
+          <div id="hero-canvas-container">
+            <canvas id="hero-canvas"></canvas>
+          </div>
+
+          <!-- Hero UI Content -->
+          <div class="hero-content">
+            <!-- Masthead -->
+            <header class="hero-masthead">
+              <div class="masthead-brand">
+                <span class="brand-badge"></span>
+                <span>CHICAGO BULLS // FLIGHT SYSTEMS // EST. 1966</span>
+              </div>
+              <nav class="masthead-nav">
+                <a href="#dynasty">01 // DYNASTY</a>
+                <a href="#timeline">02 // CAREER</a>
+                <a href="#biometrics">03 // FLIGHT</a>
+                <a href="#archive">04 // ARCHIVE</a>
+              </nav>
+              <a href="#dynasty" class="masthead-cta">[ ENTER HARDWOOD → ]</a>
+            </header>
+
+            <!-- Middle Identity Row -->
+            <div class="hero-middle">
+              <div class="hero-identity">
+                <div class="hero-driver-tag">LEGEND_023</div>
+                <h1 class="hero-name">MICHAEL<br>JORDAN</h1>
+                <div class="hero-meta-rows">
+                  <div class="meta-row">
+                    <span class="flag">USA</span>
+                    <span class="val">SHOOTING GUARD // NO. 23</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="label">TENURE:</span>
+                    <span class="val">CHICAGO BULLS (1984–1998)</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="label">HONORS:</span>
+                    <span class="val">6× NBA CHAMPION // 5× MVP</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="label">SCORING:</span>
+                    <span class="val">30.12 PPG (ALL-TIME RECORD)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Rail Minimal Bracket-Cornered Panels -->
+              <div class="hero-panels-column">
+                <!-- Panel 1: Clutch Finals Moment -->
+                <div class="bracket-panel">
+                  <div class="panel-corner-tl"></div><div class="panel-corner-tr"></div>
+                  <div class="panel-corner-bl"></div><div class="panel-corner-br"></div>
+                  <div class="bracket-eyebrow">CHAMPIONSHIP POINT</div>
+                  <div class="bracket-main-title">1998 FINALS // GAME 6</div>
+                  <div class="bracket-subtitle">DELTA CENTER // 14 JUN 1998</div>
+                  <div class="circuit-vector-box">
+                    <svg viewBox="0 0 160 45">
+                      <path d="M10,38 L65,38 A40,40 0 0,1 150,38" stroke-dasharray="3 3" />
+                      <circle cx="108" cy="18" r="4" fill="var(--accent)" />
+                      <circle cx="108" cy="18" r="8" stroke="var(--accent)" stroke-width="1.2" />
+                      <path d="M65,42 L108,18" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Panel 2: Interactive Tenure Uniform Switcher -->
+                <div class="bracket-panel">
+                  <div class="panel-corner-tl"></div><div class="panel-corner-tr"></div>
+                  <div class="panel-corner-bl"></div><div class="panel-corner-br"></div>
+                  <div class="bracket-eyebrow">UNIFORM TENURE</div>
+                  <div style="font-size: 0.6875rem; color: var(--raw-color-steel-400); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">CLICK TO SWITCH UNIFORM:</div>
+                  <div class="tenure-btns-list" id="jersey-selector-group">
+                    <button class="jersey-btn active" data-jersey="0">
+                      <span>1998 ROAD RED</span>
+                      <span class="badge">● TITLE</span>
+                    </button>
+                    <button class="jersey-btn" data-jersey="1">
+                      <span>1996 72-10 PINSTRIPE</span>
+                      <span class="badge">ALT</span>
+                    </button>
+                    <button class="jersey-btn" data-jersey="2">
+                      <span>1991 HOME WHITE</span>
+                      <span class="badge">CLASSIC</span>
+                    </button>
+                    <button class="jersey-btn" data-jersey="3">
+                      <span>1992 USA DREAM TEAM</span>
+                      <span class="badge">OLYMPIC</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Panel 3: Dynasty Stats -->
+                <div class="bracket-panel">
+                  <div class="panel-corner-tl"></div><div class="panel-corner-tr"></div>
+                  <div class="panel-corner-bl"></div><div class="panel-corner-br"></div>
+                  <div class="bracket-eyebrow">DYNASTY TOTALS</div>
+                  <div class="stats-horizontal-grid">
+                    <div>
+                      <div class="stat-number">6</div>
+                      <div class="stat-caption">RINGS</div>
+                    </div>
+                    <div>
+                      <div class="stat-number">5</div>
+                      <div class="stat-caption">MVPS</div>
+                    </div>
+                    <div>
+                      <div class="stat-number">30.1</div>
+                      <div class="stat-caption">PPG</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Actions Row -->
+            <footer class="hero-actions-row">
+              <button class="hero-audio-toggle" id="audio-toggle" title="Toggle Synthesizer Feedback">
+                <div class="audio-wave">
+                  <span class="audio-bar"></span>
+                  <span class="audio-bar"></span>
+                  <span class="audio-bar"></span>
+                  <span class="audio-bar"></span>
+                </div>
+                <span id="audio-label">AUDIO: ACTIVE [44.1KHZ]</span>
+              </button>
+              <div class="hero-live-badge">
+                <span class="live-dot"></span>
+                <span>UNITED CENTER // PERPETUAL LEGACY</span>
+              </div>
+              <div>FLIGHT ARCHIVES: ACTIVE</div>
+            </footer>
+          </div>
+        </section>
+        <div class="stack-shade" id="layer-shade-1"></div>
+      </div>
+    </div>
+
+    <!-- LAYER 2: THE DYNASTY & CLUTCH MAP -->
+    <div class="stack-layer" data-layer="2" id="dynasty">
+      <div class="stack-inner" id="layer-inner-2">
+        <section data-season>
+          <!-- Chequered Seam Dissolve Canvas -->
+          <canvas id="seam-canvas"></canvas>
+
+          <!-- Basketball Court Halftone Stage -->
+          <div class="court-stage">
+            <canvas id="court-canvas"></canvas>
+            <svg class="court-svg-layer" viewBox="0 0 2560 1440" preserveAspectRatio="xMidYMid slice">
+              <g stroke="rgba(224, 26, 53, 0.4)" stroke-width="2.5" fill="none">
+                <rect x="180" y="160" width="2200" height="1120" rx="16" />
+                <line x1="1280" y1="160" x2="1280" y2="1280" stroke-dasharray="12 8" />
+                <circle cx="1280" cy="720" r="180" />
+                <circle cx="1280" cy="720" r="60" stroke-dasharray="6 6" />
+
+                <rect x="180" y="480" width="460" height="480" stroke="rgba(255, 255, 255, 0.2)" />
+                <path d="M180,260 L380,260 A720,720 0 0,1 380,1180 L180,1180" stroke="rgba(224, 26, 53, 0.6)" stroke-width="3" />
+                <circle cx="640" cy="720" r="160" stroke-dasharray="8 8" />
+                <line x1="280" y1="670" x2="280" y2="770" stroke="rgba(255, 255, 255, 0.8)" stroke-width="4" />
+                <circle cx="320" cy="720" r="22" stroke="var(--raw-color-accent)" stroke-width="4" />
+
+                <rect x="1920" y="480" width="460" height="480" stroke="rgba(255, 255, 255, 0.2)" />
+                <path d="M2380,260 L2180,260 A720,720 0 0,0 2180,1180 L2380,1180" stroke="rgba(224, 26, 53, 0.6)" stroke-width="3" />
+                <circle cx="1920" cy="720" r="160" stroke-dasharray="8 8" />
+                <line x1="2280" y1="670" x2="2280" y2="770" stroke="rgba(255, 255, 255, 0.8)" stroke-width="4" />
+                <circle cx="2240" cy="720" r="22" stroke="var(--raw-color-accent)" stroke-width="4" />
+              </g>
+            </svg>
+          </div>
+
+          <!-- Section Copy & Standings Plate -->
+          <div class="season-content">
+            <div class="season-header">
+              <div class="season-eyebrow">CHAMPIONSHIP MAPPING // 72-10 DOMINANCE</div>
+              <h2 class="season-title">THE DYNASTY<br>RECORD<span class="period">.</span></h2>
+              <div class="season-divider-bar"></div>
+              <p class="season-desc">
+                SIX TRIPS TO THE FINALS. SIX RINGS. SIX FINALS MVPS. ZERO GAME SEVENS. THE GREATEST DYNASTY TO EVER STEP ON HARDWOOD.
+              </p>
+            </div>
+
+            <div class="standings-plate-container">
+              <div class="standings-plate">
+                <div class="plate-globe-cell">
+                  <div class="plate-wireframe-ball">
+                    <svg viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="45" />
+                      <line x1="50" y1="5" x2="50" y2="95" />
+                      <line x1="5" y1="50" x2="95" y2="50" />
+                      <ellipse cx="50" cy="50" rx="45" ry="22" />
+                    </svg>
+                  </div>
+                  <div class="plate-globe-meta">
+                    NBA <span class="gold">// 1991-98</span>
+                  </div>
+                </div>
+                <div class="plate-stats-cell">
+                  <div class="plate-stat-row">
+                    <span class="stat-fig">6-0</span>
+                    <span class="stat-lbl">FINALS RECORD</span>
+                  </div>
+                  <div class="plate-stat-row">
+                    <span class="stat-fig">72-10</span>
+                    <span class="stat-lbl">'96 REGULAR SEASON</span>
+                  </div>
+                  <div class="plate-stat-row">
+                    <span class="stat-fig">6/6</span>
+                    <span class="stat-lbl">FINALS MVPS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="reticle-hud">
+              <div>HARDWOOD RADAR: <span class="val" id="radar-coords">X: 52.4 FT | Y: 24.1 FT</span></div>
+              <div>ZONE: <span class="val" id="radar-zone">TOP OF KEY (THE LAST SHOT)</span></div>
+              <div>EFFICIENCY: <span class="val">89.4% FG</span></div>
+            </div>
+          </div>
+        </section>
+        <div class="stack-shade" id="layer-shade-2"></div>
+      </div>
+    </div>
+
+    <!-- LAYER 3: THE CAREER TIMELINE -->
+    <div class="stack-layer" data-layer="3" id="timeline">
+      <div class="stack-inner" id="layer-inner-3">
+        <section data-timeline>
+          <div class="timeline-header">
+            <div class="timeline-eyebrow">CHRONOLOGICAL ARCHIVE // 1982 — 1998</div>
+            <h2 class="timeline-title">FROM WILMINGTON TO THE RAFTERS</h2>
+            <p class="timeline-subtitle">SEVEN PIVOTAL ERAS OF BASKETBALL TRANSCENDENCE</p>
+          </div>
+
+          <div class="timeline-track-wrapper">
+            <div class="timeline-center-rail">
+              <div class="timeline-progress-bar" id="timeline-progress-bar"></div>
+              <div class="timeline-spinning-marker" id="timeline-marker"></div>
+            </div>
+
+            <div class="timeline-cards-list">
+              <!-- 1982 -->
+              <div class="timeline-card-row left">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1982.jpg" alt="1982 Freshman Jumper" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1982</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>NCAA NATIONAL CHAMPIONSHIP</span>
+                      <span>NEW ORLEANS</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE FRESHMAN JUMPER</h3>
+                    <p class="timeline-card-desc">15 SECONDS ON THE CLOCK. JORDAN DRAWS UP A 16-FOOT JUMPER ON THE LEFT WING TO SECURE DEAN SMITH'S FIRST NATIONAL TITLE FOR NORTH CAROLINA.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1984 -->
+              <div class="timeline-card-row right">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1984.jpg" alt="1984 Bulls Draft" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1984</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>ROUND 1 // PICK 3</span>
+                      <span>CHICAGO BULLS</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE BULLS ARRIVAL</h3>
+                    <p class="timeline-card-desc">DRAFTED 3RD OVERALL. IMMEDIATELY ELECTRIFIES THE LEAGUE, AVERAGING 28.2 POINTS PER GAME AND EARNING ROOKIE OF THE YEAR HONORS.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1988 -->
+              <div class="timeline-card-row left">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1988.jpg" alt="1988 Slam Dunk Apex" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1988</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>FREE THROW LINE DUNK</span>
+                      <span>DPOY + MVP</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE ANATOMY OF FLIGHT</h3>
+                    <p class="timeline-card-desc">TAKES OFF FROM THE CHARITY STRIPE AT CHICAGO STADIUM TO WIN THE SLAM DUNK CONTEST. BECOMES THE ONLY PLAYER EVER TO WIN MVP, DPOY, AND SCORING TITLE SIMULTANEOUSLY.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1991 -->
+              <div class="timeline-card-row right">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1991.jpg" alt="1991 First Ring" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1991</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>FIRST CHAMPIONSHIP</span>
+                      <span>4-1 VS LAKERS</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE PROMISED LAND</h3>
+                    <p class="timeline-card-desc">SWEEPS THE 'BAD BOYS' PISTONS TO CONQUER THE EAST, THEN CRUSHES MAGIC JOHNSON'S LAKERS 4-1. CRIES WITH THE LARRY O'BRIEN TROPHY IN AN ICONIC MOMENT.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1993 -->
+              <div class="timeline-card-row left">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1993.jpg" alt="1993 First Three Peat" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1993</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>HISTORIC THREE-PEAT</span>
+                      <span>41.0 PPG FINALS RECORD</span>
+                    </div>
+                    <h3 class="timeline-card-title">SUPREME REIGN</h3>
+                    <p class="timeline-card-desc">AVERAGED 41.0 POINTS PER GAME ACROSS SIX INTENSE GAMES AGAINST CHARLES BARKLEY'S PHOENIX SUNS, CEMENTING CHICAGO'S FIRST THREE-PEAT.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1996 -->
+              <div class="timeline-card-row right">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1996.jpg" alt="1996 72-10 Return" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1996</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>72 WINS // 10 LOSSES</span>
+                      <span>FATHER'S DAY TRIUMPH</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE GREATEST SEASON</h3>
+                    <p class="timeline-card-desc">WEARING THE AIR JORDAN XI 'BRED', BULLS ROAR TO A RECORD 72 WINS. WINS THE CHAMPIONSHIP ON FATHER'S DAY IN DEDICATION TO HIS LATE FATHER JAMES JORDAN.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1998 -->
+              <div class="timeline-card-row left">
+                <div class="timeline-plate">
+                  <div class="timeline-card-visual">
+                    <img src="./assets/timeline-1998.jpg" alt="1998 The Last Dance" onerror="this.style.display='none'">
+                    <div class="timeline-visual-overlay"></div>
+                    <div class="timeline-year-watermark">1998</div>
+                  </div>
+                  <div class="timeline-card-body">
+                    <div class="timeline-card-eyebrow">
+                      <span>THE LAST DANCE</span>
+                      <span>GAME 6 // DELTA CENTER</span>
+                    </div>
+                    <h3 class="timeline-card-title">THE LAST SHOT</h3>
+                    <p class="timeline-card-desc">STEAL ON MALONE, DRIVE ON BYRON RUSSELL, SHARP CROSSOVER, ELEVATION AT 18 FEET, 5.2 SECONDS LEFT. SWOOSH. 87-86. SIXTH RING. PINNACLE OF BASKETBALL.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div> <!-- END STICKY STACK -->
+
+  <!-- SECTION 4: THE ANATOMY OF FLIGHT -->
+  <section data-flight id="biometrics">
+    <canvas id="contour-canvas"></canvas>
+
+    <div class="flight-content">
+      <div class="flight-header">
+        <div class="flight-eyebrow">BIOMECHANICAL ARCHIVE // THE FLIGHT ENGINE</div>
+        <h2 class="flight-title">THE ANATOMY<br>OF FLIGHT</h2>
+        <p class="flight-intro">
+          ENGINEERED LEAP VELOCITY, A 48-INCH MEASURED ELEVATION, AND AN UNRIVALED WILL TO DOMINATE. HOW MICHAEL JORDAN REDEFINED THE LAWS OF AERODYNAMICS IN PROFESSIONAL ATHLETICS.
+        </p>
+      </div>
+
+      <div class="flight-biometrics-grid">
+        <div class="biometric-card">
+          <div class="biometric-tag">PEAK ELEVATION</div>
+          <div class="biometric-value">48.0"</div>
+          <div class="biometric-label">VERTICAL LEAP (1.22 METERS)</div>
+        </div>
+        <div class="biometric-card">
+          <div class="biometric-tag">MEASURED HANGTIME</div>
+          <div class="biometric-value">0.92s</div>
+          <div class="biometric-label">AIRBORNE TIME (AVG HUMAN: 0.53s)</div>
+        </div>
+        <div class="biometric-card">
+          <div class="biometric-tag">WINGSPAN ADVANTAGE</div>
+          <div class="biometric-value">6'11"</div>
+          <div class="biometric-label">PALM CONTROL & RECOVERY ARC</div>
+        </div>
+        <div class="biometric-card">
+          <div class="biometric-tag">RELEASE LEAN</div>
+          <div class="biometric-value">12.4°</div>
+          <div class="biometric-label">UNBLOCKABLE FADEAWAY CANT</div>
+        </div>
+      </div>
+
+      <div class="finals-strip-section">
+        <div class="finals-strip-header">
+          <span>THE SIX CHAMPIONSHIP CAMPAIGNS // 1991 — 1998</span>
+          <span>100% FINALS WIN RATE</span>
+        </div>
+        <div class="finals-strip-cards">
+          <div class="final-round-card">
+            <div class="final-card-year">1991</div>
+            <div class="final-card-opponent">VS LAKERS (4-1)</div>
+            <div class="final-card-result">31.2 PPG // 11.4 APG</div>
+          </div>
+          <div class="final-round-card">
+            <div class="final-card-year">1992</div>
+            <div class="final-card-opponent">VS BLAZERS (4-2)</div>
+            <div class="final-card-result">35.8 PPG // 'THE SHRUG'</div>
+          </div>
+          <div class="final-round-card">
+            <div class="final-card-year">1993</div>
+            <div class="final-card-opponent">VS SUNS (4-2)</div>
+            <div class="final-card-result">41.0 PPG (RECORD)</div>
+          </div>
+          <div class="final-round-card">
+            <div class="final-card-year">1996</div>
+            <div class="final-card-opponent">VS SONICS (4-2)</div>
+            <div class="final-card-result">72-10 CAMPAIGN</div>
+          </div>
+          <div class="final-round-card">
+            <div class="final-card-year">1997</div>
+            <div class="final-card-opponent">VS JAZZ (4-2)</div>
+            <div class="final-card-result">32.3 PPG // 'FLU GAME'</div>
+          </div>
+          <div class="final-round-card active">
+            <div class="final-pulse-dot"></div>
+            <div class="final-card-year">1998</div>
+            <div class="final-card-opponent">VS JAZZ (4-2)</div>
+            <div class="final-card-result">THE LAST SHOT // RING 6</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flight-actions">
+        <a href="#dynasty" class="chamfer-btn">
+          <span>ACCESS COMBINE BIOMETRICS [023] →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: BECOME LEGENDARY (FOOTER) -->
+  <section data-footer id="archive">
+    <div class="footer-inner-panel">
+      <canvas id="footer-contour-canvas"></canvas>
+
+      <div class="footer-top">
+        <h2 class="footer-headline">
+          BECOME<br><span class="accent">LEGENDARY.</span>
+        </h2>
+        <div class="footer-nav-col">
+          <a href="#hero-canvas-container">↑ 00 // FLIGHT 023</a>
+          <a href="#dynasty">→ 01 // HARDWOOD RADAR</a>
+          <a href="#timeline">→ 02 // CAREER TIMELINE</a>
+          <a href="#biometrics">→ 03 // THE FLIGHT ENGINE</a>
+          <a href="#archive">→ 04 // UNITED CENTER ARCHIVE</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal-copy">
+          <span>CHICAGO BULLS ARCHIVES // JERSEY #23 RETIRED</span>
+          <span>FLIGHT SYSTEM 1984 — 1998</span>
+        </div>
+        <button class="footer-back-to-top" id="back-to-top">RETURN TO FLIGHT CROWN ↑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INLINE ES MODULE ARCHITECTURE -->
+  <script type="module">
+    import * as THREE from 'three';
+    import Lenis from 'lenis';
+
+    /* ----------------------------------------------------
+       WEB AUDIO SYNTHESIZER
+       ---------------------------------------------------- */
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playBlip(freq = 600, duration = 0.04) {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.4, this.ctx.currentTime + duration);
+          gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {}
+      }
+      playSwoosh() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.3);
+        } catch (e) {}
+      }
+    }
+    const audio = new AudioEngine();
+
+    const audioToggleBtn = document.getElementById('audio-toggle');
+    const audioLabel = document.getElementById('audio-label');
+    audioToggleBtn.addEventListener('click', () => {
+      audio.init();
+      audio.enabled = !audio.enabled;
+      audioToggleBtn.classList.toggle('muted', !audio.enabled);
+      audioLabel.textContent = audio.enabled ? 'AUDIO: ACTIVE [44.1KHZ]' : 'AUDIO: MUTED';
+      if (audio.enabled) audio.playBlip(880, 0.08);
+    });
+
+    document.querySelectorAll('a, button, .bracket-panel, .timeline-plate, .biometric-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (audio.enabled && audio.ctx) audio.playBlip(720, 0.03);
+      });
+    });
+
+    /* ----------------------------------------------------
+       REACT-SPRING DAMPED SOLVER
+       ---------------------------------------------------- */
+    class DampedSpring {
+      constructor({ tension = 170, friction = 26, mass = 1 } = {}) {
+        this.tension = tension;
+        this.friction = friction;
+        this.mass = mass;
+        this.value = 0;
+        this.velocity = 0;
+        this.target = 0;
+        this.isSettled = true;
+      }
+      set(val) {
+        this.target = val;
+        this.isSettled = false;
+      }
+      reset(val) {
+        this.value = val;
+        this.target = val;
+        this.velocity = 0;
+        this.isSettled = true;
+      }
+      step(dt) {
+        if (this.isSettled) return this.value;
+        const subSteps = Math.min(Math.floor(dt * 1000), 64);
+        const subDt = 0.001;
+        for (let i = 0; i < subSteps; i++) {
+          const force = -this.tension * (this.value - this.target);
+          const damping = -this.friction * this.velocity;
+          const accel = (force + damping) / this.mass;
+          this.velocity += accel * subDt;
+          this.value += this.velocity * subDt;
+        }
+        if (Math.abs(this.velocity) < 0.005 && Math.abs(this.target - this.value) < 0.005) {
+          this.value = this.target;
+          this.velocity = 0;
+          this.isSettled = true;
+        }
+        return this.value;
+      }
+    }
+
+    /* ----------------------------------------------------
+       SHARED TICKER & LENIS SMOOTH SCROLL
+       ---------------------------------------------------- */
+    const subscribers = new Set();
+    function subscribe(cb) {
+      subscribers.add(cb);
+      return () => subscribers.delete(cb);
+    }
+
+    const lenis = new Lenis({
+      smoothWheel: true,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+    });
+
+    let lastTime = performance.now();
+    function mainLoop(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+      lenis.raf(now);
+      for (const cb of subscribers) cb(now, dt);
+      requestAnimationFrame(mainLoop);
+    }
+    requestAnimationFrame(mainLoop);
+
+    document.getElementById('back-to-top').addEventListener('click', () => {
+      audio.init();
+      audio.playSwoosh();
+      lenis.scrollTo(0, { duration: 2.0 });
+    });
+
+    /* ----------------------------------------------------
+       STICKY STACK RECEDE
+       ---------------------------------------------------- */
+    const stackInner1 = document.getElementById('layer-inner-1');
+    const stackShade1 = document.getElementById('layer-shade-1');
+    const layer2 = document.querySelector('.stack-layer[data-layer="2"]');
+
+    const stackInner2 = document.getElementById('layer-inner-2');
+    const stackShade2 = document.getElementById('layer-shade-2');
+    const layer3 = document.querySelector('.stack-layer[data-layer="3"]');
+
+    const isPhone = window.matchMedia('(max-width: 639px)');
+
+    subscribe(() => {
+      const vh = window.innerHeight || 1;
+      const shrink = isPhone.matches ? 0 : 0.10;
+
+      if (layer2 && stackInner1) {
+        const top2 = layer2.getBoundingClientRect().top;
+        const p1 = Math.min(1, Math.max(0, 1 - top2 / vh));
+        stackInner1.style.transform = p1 > 0 && shrink > 0 ? `scale(${1 - shrink * p1})` : '';
+        stackShade1.style.opacity = `${0.55 * p1}`;
+        stackInner1.style.visibility = p1 >= 1 ? 'hidden' : 'visible';
+      }
+
+      if (layer3 && stackInner2) {
+        const top3 = layer3.getBoundingClientRect().top;
+        const p2 = Math.min(1, Math.max(0, 1 - top3 / vh));
+        stackInner2.style.transform = p2 > 0 && shrink > 0 ? `scale(${1 - shrink * p2})` : '';
+        stackShade2.style.opacity = `${0.55 * p2}`;
+        stackInner2.style.visibility = p2 >= 1 ? 'hidden' : 'visible';
+      }
+    });
+
+    /* ----------------------------------------------------
+       SECTION 1: HERO WEBGL 3D SCENE (THREE.JS)
+       ---------------------------------------------------- */
+    const heroCanvas = document.getElementById('hero-canvas');
+    const renderer = new THREE.WebGLRenderer({
+      canvas: heroCanvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 5.2);
+
+    // Mouse Pointer tracking for natural depth-parallax tilt
+    const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    window.addEventListener('pointermove', (e) => {
+      audio.init();
+      pointer.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // Master High-Resolution Texture Loading
+    const textureLoader = new THREE.TextureLoader();
+    let jerseyRedMap, jerseyBlackMap, jerseyWhiteMap, jerseyUsaMap, shadowMap;
+
+    let assetsLoadedCount = 0;
+    function onAssetLoaded() {
+      assetsLoadedCount++;
+      const pct = Math.min(100, Math.round((assetsLoadedCount / 5) * 100));
+      document.getElementById('veil-meter').style.width = pct + '%';
+      document.getElementById('veil-fill').style.height = pct + '%';
+      if (assetsLoadedCount >= 5) {
+        setTimeout(initHeroReveal, 100);
+      }
+    }
+
+    jerseyRedMap = textureLoader.load('./assets/jordan-master-red.webp', (tex) => {
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = false;
+      onAssetLoaded();
+    });
+    jerseyBlackMap = textureLoader.load('./assets/jordan-master-black.webp', (tex) => {
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = false;
+      onAssetLoaded();
+    });
+    jerseyWhiteMap = textureLoader.load('./assets/jordan-master-white.webp', (tex) => {
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = false;
+      onAssetLoaded();
+    });
+    jerseyUsaMap = textureLoader.load('./assets/jordan-master-usa.webp', (tex) => {
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = false;
+      onAssetLoaded();
+    });
+    shadowMap = textureLoader.load('./assets/jordan-shadow.webp', (tex) => {
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = false;
+      onAssetLoaded();
+    });
+
+    setTimeout(() => {
+      initHeroReveal();
+    }, 600);
+
+    let introSpring = new DampedSpring({ tension: 70, friction: 24 });
+    introSpring.reset(0);
+
+    function initHeroReveal() {
+      const veil = document.getElementById('loading-veil');
+      veil.classList.add('loaded');
+      introSpring.set(1.0);
+    }
+
+    // Smooth Jersey Transition Spring
+    const jerseyBlendSpring = new DampedSpring({ tension: 120, friction: 22 });
+    jerseyBlendSpring.reset(1.0);
+
+    // Master High-Craft Photographic Shader (Zero cursor wobble, 100% native resolution)
+    const portraitMaterial = new THREE.ShaderMaterial({
+      transparent: true,
+      uniforms: {
+        uJerseyFrom: { value: jerseyBlackMap },
+        uJerseyTo: { value: jerseyRedMap },
+        uIntro: { value: 0 },
+        uBlend: { value: 1.0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uJerseyFrom;
+        uniform sampler2D uJerseyTo;
+        uniform float uIntro;
+        uniform float uBlend;
+        varying vec2 vUv;
+
+        void main() {
+          vec4 fromTex = texture2D(uJerseyFrom, vUv);
+          vec4 toTex = texture2D(uJerseyTo, vUv);
+          if (fromTex.a < 0.01 && toTex.a < 0.01) discard;
+
+          // Smooth silky crossfade between uniforms
+          float blendNorm = smoothstep(0.0, 1.0, uBlend);
+          vec4 baseCloth = mix(fromTex, toTex, blendNorm);
+
+          // Subtle silk sheen sweep during uniform transition
+          float transitionActive = sin(blendNorm * 3.14159);
+          float sheenLine = sin((vUv.x * 2.2 - vUv.y * 1.5 + uBlend * 4.0) * 3.14159);
+          float sheen = pow(max(0.0, sheenLine), 5.0) * transitionActive * 0.18;
+
+          vec3 finalColor = baseCloth.rgb + vec3(1.0, 0.95, 0.88) * sheen;
+          float introFactor = smoothstep(0.0, 1.0, uIntro);
+
+          // Seamless Page Immersion:
+          // Soft bottom torso dissolve so torso melts organically into the page background
+          float bottomFade = smoothstep(0.0, 0.22, vUv.y);
+          float sideFade = smoothstep(0.0, 0.02, vUv.x) * smoothstep(1.0, 0.98, vUv.x);
+          float alphaFade = bottomFade * sideFade;
+
+          // Seamlessly blend into ice ground color #f7fafb at fading edges
+          vec3 iceGround = vec3(0.9686, 0.9804, 0.9843);
+          vec3 blendedColor = mix(iceGround, finalColor, bottomFade);
+
+          gl_FragColor = vec4(blendedColor, baseCloth.a * alphaFade * introFactor);
+        }
+      `
+    });
+
+    // 1. Backdrop Dimensional Shadow Mesh (Anchors Jordan into 3D scene space)
+    const shadowGeometry = new THREE.PlaneGeometry(3.6, 4.6, 1, 1);
+    const shadowMaterial = new THREE.MeshBasicMaterial({
+      map: shadowMap,
+      transparent: true,
+      opacity: 0.70,
+      depthWrite: false
+    });
+    const shadowMesh = new THREE.Mesh(shadowGeometry, shadowMaterial);
+    shadowMesh.position.set(0.04, -0.20, -0.25);
+    scene.add(shadowMesh);
+
+    // 2. 896x1200 exact 4:3 aspect ratio geometry for Jordan
+    const portraitGeometry = new THREE.PlaneGeometry(3.3, 4.4, 1, 1);
+    const portraitMesh = new THREE.Mesh(portraitGeometry, portraitMaterial);
+    portraitMesh.position.set(0, -0.15, 0);
+    scene.add(portraitMesh);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(3, 4, 5);
+    scene.add(dirLight);
+
+    // Shared Ticker loop for Three.js (Subtle camera parallax giving physical depth)
+    subscribe((time, dt) => {
+      const introVal = introSpring.step(dt);
+      const blendVal = jerseyBlendSpring.step(dt);
+
+      portraitMaterial.uniforms.uIntro.value = introVal;
+      portraitMaterial.uniforms.uBlend.value = blendVal;
+
+      // Subtle entrance rise
+      portraitMesh.position.y = -0.15 - (1.0 - introVal) * 0.35;
+
+      // Gentle camera parallax that keeps Jordan proportions rock-solid while creating real 3D depth with shadow
+      pointer.x += (pointer.targetX - pointer.x) * 0.05;
+      pointer.y += (pointer.targetY - pointer.y) * 0.05;
+
+      camera.position.x = pointer.x * 0.12;
+      camera.position.y = pointer.y * 0.08;
+      camera.lookAt(0, -0.05, 0);
+
+      shadowMesh.position.x = 0.04 - pointer.x * 0.04;
+      shadowMesh.position.y = -0.20 - pointer.y * 0.03;
+
+      renderer.render(scene, camera);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Interactive Tenure Jersey Selector Logic
+    let currentJerseyIdx = 0;
+    const jerseyMaps = [jerseyRedMap, jerseyBlackMap, jerseyWhiteMap, jerseyUsaMap];
+
+    const jerseyBtns = document.querySelectorAll('.jersey-btn');
+    jerseyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetIdx = parseInt(btn.getAttribute('data-jersey'), 10);
+        if (targetIdx === currentJerseyIdx) return;
+
+        audio.init();
+        audio.playBlip(750, 0.05);
+
+        // Update uniforms for smooth transition
+        portraitMaterial.uniforms.uJerseyFrom.value = jerseyMaps[currentJerseyIdx];
+        portraitMaterial.uniforms.uJerseyTo.value = jerseyMaps[targetIdx];
+        currentJerseyIdx = targetIdx;
+
+        jerseyBlendSpring.reset(0.0);
+        jerseyBlendSpring.set(1.0);
+
+        jerseyBtns.forEach(b => {
+          b.classList.remove('active');
+          const badge = b.querySelector('.badge');
+          if (badge) {
+            badge.textContent = b.getAttribute('data-jersey') === '1' ? 'ALT' : b.getAttribute('data-jersey') === '2' ? 'CLASSIC' : 'TITLE';
+          }
+        });
+
+        btn.classList.add('active');
+        const activeBadge = btn.querySelector('.badge');
+        if (activeBadge) activeBadge.textContent = '● ACTIVE';
+      });
+    });
+
+    /* ----------------------------------------------------
+       SECTION 2: SEAM CHEQUERED DISSOLVE & COURT HALFTONE
+       ---------------------------------------------------- */
+    const seamCanvas = document.getElementById('seam-canvas');
+    const seamCtx = seamCanvas.getContext('2d');
+    function resizeSeam() {
+      seamCanvas.width = seamCanvas.clientWidth * Math.min(window.devicePixelRatio, 2);
+      seamCanvas.height = seamCanvas.clientHeight * Math.min(window.devicePixelRatio, 2);
+    }
+    resizeSeam();
+    window.addEventListener('resize', resizeSeam);
+
+    subscribe(() => {
+      const w = seamCanvas.width;
+      const h = seamCanvas.height;
+      if (!w || !h) return;
+      seamCtx.clearRect(0, 0, w, h);
+
+      const tileSize = 24 * Math.min(window.devicePixelRatio, 2);
+      const cols = Math.ceil(w / tileSize);
+      const rows = Math.ceil(h / tileSize);
+
+      const rect2 = layer2.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -rect2.top / (window.innerHeight * 0.5)));
+
+      for (let r = 0; r < rows; r++) {
+        const rowNorm = r / rows;
+        for (let c = 0; c < cols; c++) {
+          const isChequer = (c + r) % 2 === 0;
+          const dissolveThreshold = (1.0 - rowNorm) - p * 0.5;
+          if (Math.random() < dissolveThreshold && isChequer) {
+            seamCtx.fillStyle = 'rgba(247, 250, 251, ' + Math.max(0, dissolveThreshold) + ')';
+            seamCtx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
+          }
+        }
+      }
+    });
+
+    const courtCanvas = document.getElementById('court-canvas');
+    const courtCtx = courtCanvas.getContext('2d');
+
+    let courtDots = [];
+    const courtLattice = { pitch: 16, minX: 180, maxX: 2380, minY: 160, maxY: 1280 };
+
+    const offscreenCourt = document.createElement('canvas');
+    offscreenCourt.width = 2560;
+    offscreenCourt.height = 1440;
+    const offCtx = offscreenCourt.getContext('2d');
+
+    function initCourtHalftone() {
+      courtDots = [];
+      offCtx.clearRect(0, 0, 2560, 1440);
+      offCtx.fillStyle = '#464a52';
+
+      for (let y = courtLattice.minY; y <= courtLattice.maxY; y += courtLattice.pitch) {
+        for (let x = courtLattice.minX; x <= courtLattice.maxX; x += courtLattice.pitch) {
+          courtDots.push({ x, y, col: Math.round(x / 16), row: Math.round(y / 16) });
+          offCtx.beginPath();
+          offCtx.arc(x, y, 1.75, 0, Math.PI * 2);
+          offCtx.fill();
+        }
+      }
+    }
+    initCourtHalftone();
+
+    function resizeCourt() {
+      courtCanvas.width = courtCanvas.clientWidth * Math.min(window.devicePixelRatio, 2);
+      courtCanvas.height = courtCanvas.clientHeight * Math.min(window.devicePixelRatio, 2);
+    }
+    resizeCourt();
+    window.addEventListener('resize', resizeCourt);
+
+    const courtMouse = { x: -1000, y: -1000, active: false };
+    const radarCoords = document.getElementById('radar-coords');
+    const radarZone = document.getElementById('radar-zone');
+
+    window.addEventListener('pointermove', (e) => {
+      const rect = courtCanvas.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        courtMouse.active = true;
+        courtMouse.x = ((e.clientX - rect.left) / rect.width) * 2560;
+        courtMouse.y = ((e.clientY - rect.top) / rect.height) * 1440;
+
+        const ftX = ((courtMouse.x - 180) / 2200 * 94).toFixed(1);
+        const ftY = ((courtMouse.y - 160) / 1120 * 50).toFixed(1);
+        radarCoords.textContent = `X: ${ftX} FT | Y: ${ftY} FT`;
+
+        if (courtMouse.x < 700) radarZone.textContent = 'THE LAST SHOT // CLUTCH ZONE';
+        else if (courtMouse.x > 1860) radarZone.textContent = 'THE STEAL ON MALONE';
+        else radarZone.textContent = 'MIDCOURT TRANSITION WING';
+      } else {
+        courtMouse.active = false;
+      }
+    });
+
+    let shotLapTime = 0;
+    const shotPath = [
+      { x: 2150, y: 720 },
+      { x: 1700, y: 550 },
+      { x: 1280, y: 480 },
+      { x: 800, y: 640 },
+      { x: 580, y: 620 },
+      { x: 520, y: 720 },
+      { x: 320, y: 720 }
+    ];
+
+    subscribe((time, dt) => {
+      const w = courtCanvas.width;
+      const h = courtCanvas.height;
+      if (!w || !h) return;
+
+      courtCtx.clearRect(0, 0, w, h);
+      courtCtx.save();
+      courtCtx.scale(w / 2560, h / 1440);
+
+      courtCtx.drawImage(offscreenCourt, 0, 0);
+
+      if (courtMouse.active) {
+        const radius = 180;
+        const radiusSq = radius * radius;
+        for (let i = 0; i < courtDots.length; i++) {
+          const d = courtDots[i];
+          const dx = d.x - courtMouse.x;
+          const dy = d.y - courtMouse.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < radiusSq) {
+            const factor = 1.0 - Math.sqrt(distSq) / radius;
+            const size = 16 * factor;
+            const isParity = (d.col + d.row) % 2 === 0;
+            courtCtx.fillStyle = isParity ? '#e01a35' : '#ffffff';
+            courtCtx.fillRect(d.x - size / 2, d.y - size / 2, size, size);
+          }
+        }
+
+        courtCtx.strokeStyle = 'rgba(224, 26, 53, 0.4)';
+        courtCtx.lineWidth = 1.5;
+        courtCtx.beginPath();
+        courtCtx.moveTo(courtMouse.x, 160);
+        courtCtx.lineTo(courtMouse.x, 1280);
+        courtCtx.moveTo(180, courtMouse.y);
+        courtCtx.lineTo(2380, courtMouse.y);
+        courtCtx.stroke();
+
+        courtCtx.strokeStyle = '#e01a35';
+        courtCtx.lineWidth = 2;
+        courtCtx.beginPath();
+        courtCtx.arc(courtMouse.x, courtMouse.y, 20, 0, Math.PI * 2);
+        courtCtx.stroke();
+      }
+
+      const safeDt = (typeof dt === 'number' && !isNaN(dt) && dt > 0) ? dt : 0.016;
+      shotLapTime = (shotLapTime + safeDt) % 7.0;
+      const progress = Math.min(1.0, Math.max(0.0, shotLapTime / 6.0));
+
+      const totalSegments = shotPath.length - 1;
+      const rawIndex = Math.floor(progress * totalSegments);
+      const segIndex = Math.max(0, Math.min(totalSegments - 1, isNaN(rawIndex) ? 0 : rawIndex));
+      const segP = Math.max(0, Math.min(1.0, (progress * totalSegments) - segIndex));
+      const p1 = shotPath[segIndex] || shotPath[0];
+      const p2 = shotPath[segIndex + 1] || p1;
+
+      const currentHead = {
+        x: p1.x + (p2.x - p1.x) * segP,
+        y: p1.y + (p2.y - p1.y) * segP
+      };
+
+      courtCtx.beginPath();
+      courtCtx.moveTo(shotPath[0].x, shotPath[0].y);
+      for (let i = 1; i <= segIndex; i++) {
+        courtCtx.lineTo(shotPath[i].x, shotPath[i].y);
+      }
+      courtCtx.lineTo(currentHead.x, currentHead.y);
+      courtCtx.strokeStyle = 'rgba(224, 26, 53, 0.85)';
+      courtCtx.lineWidth = 4;
+      courtCtx.shadowColor = '#e01a35';
+      courtCtx.shadowBlur = 16;
+      courtCtx.stroke();
+      courtCtx.shadowBlur = 0;
+
+      courtCtx.beginPath();
+      courtCtx.arc(currentHead.x, currentHead.y, 8, 0, Math.PI * 2);
+      courtCtx.fillStyle = '#ffffff';
+      courtCtx.fill();
+      courtCtx.beginPath();
+      courtCtx.arc(currentHead.x, currentHead.y, 14, 0, Math.PI * 2);
+      courtCtx.strokeStyle = '#e01a35';
+      courtCtx.lineWidth = 3;
+      courtCtx.stroke();
+
+      courtCtx.restore();
+    });
+
+    /* ----------------------------------------------------
+       SECTION 3: TIMELINE PROGRESS RAIL & ROTATING MARKER
+       ---------------------------------------------------- */
+    const timelineSection = document.querySelector('section[data-timeline]');
+    const timelineProgressBar = document.getElementById('timeline-progress-bar');
+    const timelineMarker = document.getElementById('timeline-marker');
+
+    subscribe(() => {
+      if (!timelineSection) return;
+      const rect = timelineSection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const totalH = rect.height - vh;
+      const p = Math.min(1, Math.max(0, -rect.top / totalH));
+
+      if (timelineProgressBar) {
+        timelineProgressBar.style.height = `${p * 100}%`;
+      }
+      if (timelineMarker) {
+        timelineMarker.style.top = `${p * 100}%`;
+        timelineMarker.style.transform = `translate(-50%, -50%) rotate(${p * 1800}deg)`;
+      }
+    });
+
+    /* ----------------------------------------------------
+       SECTION 4: MARCHING SQUARES / ISO-CONTOUR CANVASES
+       ---------------------------------------------------- */
+    function setupContourCanvas(canvasId, strokeColor = 'rgba(9, 10, 11, 0.08)') {
+      const c = document.getElementById(canvasId);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+
+      function resize() {
+        c.width = c.clientWidth * Math.min(window.devicePixelRatio, 1.5);
+        c.height = c.clientHeight * Math.min(window.devicePixelRatio, 1.5);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      subscribe((time) => {
+        const w = c.width;
+        const h = c.height;
+        if (!w || !h) return;
+        ctx.clearRect(0, 0, w, h);
+
+        const t = time * 0.0006;
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 1.2;
+
+        const lines = 12;
+        for (let i = 0; i < lines; i++) {
+          ctx.beginPath();
+          for (let x = 0; x <= w; x += 30) {
+            const freq = 0.003;
+            const y = (h / lines) * i + Math.sin(x * freq + t + i * 0.5) * 45 + Math.cos(x * freq * 1.5 - t * 0.7) * 25;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+      });
+    }
+
+    setupContourCanvas('hero-contour-canvas', 'rgba(9, 10, 11, 0.06)');
+    setupContourCanvas('contour-canvas', 'rgba(9, 10, 11, 0.08)');
+    setupContourCanvas('footer-contour-canvas', 'rgba(255, 255, 255, 0.25)');
+
+  </script>
+</body>
+</html>

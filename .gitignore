@@ -1,0 +1,33 @@
+# Build/patch scripts (keep build_clean_page.py as the canonical builder)
+build_page.py
+patch_*.py
+update_*.py
+test_structure.txt
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legacy/unused assets
+assets/jordan-diffuse.jpg
+assets/jordan-depth.jpg
+assets/jordan-depth-2k.jpg
+assets/jordan-normal.jpg
+assets/jordan-normal-2k.jpg
+assets/noise.png
+assets/helmet-only.webp
+assets/jordan-helmet-cutout.webp
+assets/jordan-with-helmet.webp
+assets/jersey-mask.png
+assets/jordan-jersey-red-master.png
+assets/jordan-jersey-white-master.png
+assets/jordan-jersey-black-master.png
+assets/jordan-jersey-red.webp
+assets/jordan-jersey-white.webp
+assets/jordan-jersey-black.webp
+assets/jordan-jersey-red-2k.webp
+assets/jordan-jersey-white-2k.webp
+assets/jordan-jersey-black-2k.webp
