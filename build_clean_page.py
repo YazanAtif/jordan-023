@@ -2367,7 +2367,8 @@ html_code = '''<!DOCTYPE html>
           b.classList.remove('active');
           const badge = b.querySelector('.badge');
           if (badge) {
-            badge.textContent = b.getAttribute('data-jersey') === '1' ? 'ALT' : b.getAttribute('data-jersey') === '2' ? 'CLASSIC' : 'TITLE';
+            const jid = b.getAttribute('data-jersey');
+            badge.textContent = jid === '1' ? 'ALT' : jid === '2' ? 'CLASSIC' : jid === '3' ? 'OLYMPIC' : 'TITLE';
           }
         });
 
